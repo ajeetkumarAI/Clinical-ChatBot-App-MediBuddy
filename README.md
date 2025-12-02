@@ -1,19 +1,109 @@
 *** Begin Patch
 *** Update File: README.md
 @@
--# Open Git Bash
--# Start ssh-agent and add your key:
--# cat ~/.ssh/id_ed25519.pub | clip.exe
--
--# ssh -T git@github.com
--
--eval "$(ssh-agent -s)"
--ssh-add ~/.ssh/id_ed25519
--
--cat ~/.ssh/id_ed25519.pub | clip.exe
--
--git remote set-url origin git@github.com:ajeetkumarAI/Clinical-ChatBot-App-MediBuddy.git
--git push -u origin main
+# Clinical-ChatBot-App-MediBuddy — Quick Git & SSH Guide
+
+This file contains concise, copy-pastable steps to set up SSH for GitHub (on Windows using Git Bash) and common Git commands you will use when working with this repository.
+
+Prerequisites
+- Git and Git Bash installed.
+- A GitHub account with access to the repository.
+
+1) Generate or confirm an SSH key
+
+If you don't already have an SSH key, generate one (use your email):
+
+```bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+# accept defaults or specify a path like ~/.ssh/id_ed25519
+```
+
+2) Start ssh-agent and add your key (Git Bash)
+
+```bash
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+```
+
+If `ssh-add` errors with "Could not open a connection to your authentication agent", re-run the `eval` line, then `ssh-add` again.
+
+3) Copy the public key and add it to GitHub
+
+```bash
+cat ~/.ssh/id_ed25519.pub | clip.exe
+```
+
+- Go to: https://github.com/settings/ssh/new
+- Paste the key, give it a descriptive title (e.g., "Work laptop - Git Bash"), and save.
+
+4) Verify the SSH connection
+
+```bash
+ssh -T git@github.com
+```
+
+Expected response on success:
+
+```
+Hi <your-username>! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+5) Set the repository remote to SSH and push
+
+```bash
+git remote set-url origin git@github.com:ajeetkumarAI/Clinical-ChatBot-App-MediBuddy.git
+git push -u origin main
+```
+
+Git basics (common commands)
+
+- Stage all changes:
+```bash
+git add .
+```
+- Stage a single file:
+```bash
+git add path/to/file
+```
+- Check working tree status:
+```bash
+git status
+```
+- Commit staged changes:
+```bash
+git commit -m "Short descriptive message"
+```
+- Create and switch to a new branch:
+```bash
+git checkout -b feature/your-feature-name
+```
+- Switch branch:
+```bash
+git checkout main
+```
+- Push branch and set upstream:
+```bash
+git push -u origin feature/your-feature-name
+```
+- Push current branch:
+```bash
+git push
+```
+- Pull remote changes for current branch:
+```bash
+git pull
+```
+
+Troubleshooting
+- If a push returns a 403 permission error, confirm which GitHub account you are authenticating as (you may have cached HTTPS credentials for a different account). Clearing Windows Credential Manager entries for GitHub or switching to SSH usually resolves this.
+- If `clip.exe` is not available, run `cat ~/.ssh/id_ed25519.pub` and copy the output manually into the GitHub UI.
+- If `ssh -T git@github.com` returns "Permission denied", ensure the public key was added to the correct GitHub account.
+
+Want me to commit this update?
+- I can run the staging/commit and (optionally) push commands for you if you want — tell me to proceed. Note: pushing may fail if your GitHub authentication is still the wrong account; use the SSH steps above first.
+
+--
+File: `README.md`
 +# SSH setup for pushing to GitHub
 +
 +Follow these steps in **Git Bash** to add an SSH key, register it with GitHub, switch the repository remote to SSH, and push your branch.
